@@ -90,18 +90,13 @@
 .photo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: calc(10% + 10%);
+ /* Zooms OUT to 90% - shows more */
   transition: transform 0.5s ease;
 }
 
-.photoContainer:hover {
-  animation-play-state: paused;
-  transform: scale(1.05);
-  border-color: rgba(59, 130, 246, 0.3);
-}
-
 .photoContainer:hover .photo {
-  transform: scale(1.1);
+  transform: scale(0.95); /* Slightly larger on hover */
 }
 
 /* Photo Glow Effect */
