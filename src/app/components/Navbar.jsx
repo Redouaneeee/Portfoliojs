@@ -59,7 +59,7 @@ export const Navbar = () => {
               whileHover={{ scale: 1.02 }}
               className={styles.logoText}
             >
-              Redouane.M
+              Redouane(Bigredo)
             </motion.span>
           </Link>
 
