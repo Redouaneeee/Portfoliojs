@@ -132,3 +132,94 @@ body.custom-cursor-active * {
   border-color: rgba(59, 130, 246, 0.3);
   transition: all 0.3s ease;
 }
+/* Add to your existing globals.css */
+
+/* Mobile-first base styles */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+/* Better tap targets */
+button, 
+a, 
+[role="button"],
+input,
+select,
+textarea {
+  font-size: 16px; /* Prevents zoom on focus in iOS */
+}
+
+/* Smooth scrolling */
+@media (max-width: 767px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Better touch scrolling */
+  .scrollable {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  
+  .scrollable::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+}
+
+/* Safe area insets for modern mobile devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Portrait and landscape adjustments */
+@media (orientation: portrait) {
+  .hero {
+    min-height: 100svh; /* Use small viewport height for mobile */
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .hero {
+    min-height: 120svh;
+  }
+}
+
+/* Loading states for better UX */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+/* Mobile touch targets - global styles */
+@media (max-width: 767px) {
+  button, 
+  a, 
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text overflow */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}

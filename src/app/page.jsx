@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { FadeUp, SlideIn } from '@/app/components/motion-wrapper';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
@@ -11,6 +11,18 @@ import styles from '@/app/components/Home.module.css';
 export default function Home() {
   const [email, setEmail] = useState('');
   const [emailStatus, setEmailStatus] = useState('idle');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -24,24 +36,41 @@ export default function Home() {
 
   const specialties = [
     'UI/UX Design',
-    'Responsive Web Design',
-    'Visual Development',
-    'Interactive Animations'
+    'Responsive Web',
+    'Visual Dev',
+    'Animations'
   ];
 
   return (
     <div className={styles.container}>
-
+      {/* Animated background elements */}
       <div className={styles.floatingShape} />
       <div className={styles.floatingShape2} />
 
-     
+      {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-         
+          {/* Right Column - Photo (shows first on mobile) */}
+          <SlideIn direction={isMobile ? 'up' : 'right'} delay={0.2}>
+            <div className={styles.rightColumn}>
+              <div className={styles.photoContainer}>
+                <div className={styles.photoGlow} />
+                <Image
+                  src="/myimage.jpg" // Replace with your photo
+                  alt="Profile"
+                  width={500}
+                  height={500}
+                  className={styles.photo}
+                  priority
+                />
+              </div>
+            </div>
+          </SlideIn>
+
+          {/* Left Column - Text */}
           <div className={styles.leftColumn}>
             <FadeUp>
-              <p className={styles.greeting}>👋 Hello, I'm REDOUANE</p>
+              <p className={styles.greeting}>✨ Hello, I'm</p>
             </FadeUp>
 
             <FadeUp delay={0.1}>
@@ -56,10 +85,9 @@ export default function Home() {
 
             <FadeUp delay={0.2}>
               <p className={styles.bio}>
-                a <span>Product Designer</span> and <span>Visual Developer</span> in SF.
+                a <span>Product Designer</span> and <span>Visual Developer</span>
                 <br />
-                I specialize in UI/UX Design, Responsive Web Design,
-                and Visual Development.
+                specializing in UI/UX, responsive design, and animations.
               </p>
             </FadeUp>
 
@@ -70,6 +98,7 @@ export default function Home() {
                     key={specialty}
                     className={styles.specialtyTag}
                     whileHover={{ y: -2, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     transition={{ delay: index * 0.05 }}
                   >
                     {specialty}
@@ -80,11 +109,11 @@ export default function Home() {
 
             <FadeUp delay={0.4}>
               <div className={styles.emailContainer}>
-                <p className={styles.emailLabel}>📧 Connect With Me</p>
+                <p className={styles.emailLabel}>📬 Let's connect</p>
                 <form onSubmit={handleEmailSubmit} className={styles.emailForm}>
                   <input
                     type="email"
-                    placeholder="Email address"
+                    placeholder="Your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -93,55 +122,33 @@ export default function Home() {
                   <motion.button
                     type="submit"
                     className={styles.emailButton}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: isMobile ? 1 : 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     disabled={emailStatus === 'submitting'}
                   >
-                    {emailStatus === 'submitting' ? 'Sending...' : 
-                     emailStatus === 'success' ? '✓ Sent!' : 
-                     'Connect With Me'}
+                    {emailStatus === 'submitting' ? '...' : 
+                     emailStatus === 'success' ? '✓' : 
+                     'Connect'}
                   </motion.button>
                 </form>
               </div>
             </FadeUp>
-          </div>
 
-         
-          <SlideIn direction="right" delay={0.2}>
-            <div className={styles.rightColumn}>
-              <div className={styles.photoContainer}>
-                <div className={styles.photoGlow} />
-                <Image
-                  src="/myimage.jpg" 
-                  alt="Profile"
-                  width={500}
-                  height={500}
-                  className={styles.photo}
-                  priority
-                />
-              </div>
-            </div>
-          </SlideIn>
+            <FadeUp delay={0.5}>
+              <Link href="/projects">
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors mt-6 text-sm"
+                >
+                  <span>View my work</span>
+                  <ArrowRight size={14} />
+                </motion.div>
+              </Link>
+            </FadeUp>
+          </div>
         </div>
       </section>
-
-     
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="text-center pb-8"
-      >
-        <Link href="/projects">
-          <motion.span
-            whileHover={{ x: 5 }}
-            className="inline-flex items-center gap-2 text-white/40 hover:text-white/60 transition-colors text-sm"
-          >
-            View my work
-            <ArrowRight size={14} />
-          </motion.span>
-        </Link>
-      </motion.div>
     </div>
   );
 }
